@@ -10,6 +10,7 @@ import {
 } from "../data/mock"
 import { Project, Task, Folder, File } from "../types"
 import { ProjectsGrid } from "./projects/ProjectsGrid"
+import { ProjectDetailView } from "./projects/ProjectDetailView"
 import { KanbanBoard } from "./tasks/KanbanBoard"
 import { CalendarView } from "./tasks/CalendarView"
 import { DocumentsView } from "./documents/DocumentsView"
@@ -17,7 +18,8 @@ import { LayoutDashboard, Calendar as CalendarIcon, ListTodo, FolderOpen } from 
 import { Button } from "./ui/button"
 
 export default function Dashboard() {
-  const [view, setView] = useState<"projects" | "kanban" | "calendar" | "documentos">("projects")
+  const [view, setView] = useState<"projects" | "kanban" | "calendar" | "documentos" | "project-detail">("projects")
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [projects, setProjects] = useState(initialProjects)
   const [tasks, setTasks] = useState(initialTasks)
   const [folders, setFolders] = useState(initialFolders)
@@ -190,15 +192,62 @@ export default function Dashboard() {
     }
   }
 
+  const handleProjectClick = (project: Project) => {
+    setSelectedProject(project)
+    runWithViewTransition(() => {
+      setView("project-detail")
+    })
+  }
+
+  const handleBackFromProjectDetail = () => {
+    runWithViewTransition(() => {
+      setView("projects")
+      setSelectedProject(null)
+    })
+  }
+
+  const handleLinkFilesToProject = (fileIds: string[], projectId: string) => {
+    runWithViewTransition(() => {
+      setFiles((prev) =>
+        prev.map((file) => {
+          if (fileIds.includes(file.id)) {
+            const newProjectIds = [...file.projectIds]
+            if (!newProjectIds.includes(projectId)) {
+              newProjectIds.push(projectId)
+            }
+            return { ...file, projectIds: newProjectIds }
+          }
+          return file
+        })
+      )
+    })
+  }
+
+  const handleUnlinkFileFromProject = (fileId: string, projectId: string) => {
+    runWithViewTransition(() => {
+      setFiles((prev) =>
+        prev.map((file) => {
+          if (file.id === fileId) {
+            return {
+              ...file,
+              projectIds: file.projectIds.filter((id) => id !== projectId)
+            }
+          }
+          return file
+        })
+      )
+    })
+  }
+
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <header className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-800">
+    <div className="min-h-screen bg-black text-white p-4">
+      <header className="flex items-center justify-between mb-1 pb-2 border-b border-zinc-800">
         <div>
-           <h1 className="text-3xl font-bold tracking-tight">Atria Manager</h1>
-           <p className="text-zinc-400 mt-1">Gestión integral de proyectos y tareas.</p>
+           <h1 className="text-xl font-bold tracking-tight">Atria Manager</h1>
         </div>
         
-        <div className="flex bg-zinc-900 p-1 rounded-lg border border-zinc-800">
+        {view !== "project-detail" && (
+          <div className="flex bg-zinc-900 p-1 rounded-lg border border-zinc-800">
           <Button 
             variant={view === "projects" ? "secondary" : "ghost"} 
             size="sm"
@@ -236,6 +285,7 @@ export default function Dashboard() {
             Documentos
           </Button>
         </div>
+        )}
       </header>
 
       <main className="space-y-8 animate-in fade-in duration-500">
@@ -245,6 +295,28 @@ export default function Dashboard() {
             onCreateProject={handleCreateProject}
             onUpdateProject={handleUpdateProject}
             onDeleteProject={handleDeleteProject}
+            onProjectClick={handleProjectClick}
+          />
+        )}
+        
+        {view === "project-detail" && selectedProject && (
+          <ProjectDetailView
+            project={selectedProject}
+            tasks={tasks}
+            files={files}
+            folders={folders}
+            projects={projects}
+            onBack={handleBackFromProjectDetail}
+            onEdit={handleUpdateProject}
+            onDelete={handleDeleteProject}
+            onCreateTask={handleCreateTask}
+            onUpdateTask={handleUpdateTask}
+            onDeleteTask={handleDeleteTask}
+            onLinkFiles={handleLinkFilesToProject}
+            onUnlinkFile={handleUnlinkFileFromProject}
+            onDeleteFile={handleDeleteFile}
+            onRenameFile={handleRenameFile}
+            onDownloadFile={handleDownloadFile}
           />
         )}
         

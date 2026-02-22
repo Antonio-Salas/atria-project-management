@@ -12,22 +12,28 @@ interface ProjectsGridProps {
   onCreateProject: (projectData: Omit<Project, "id">) => void
   onUpdateProject: (project: Project) => void
   onDeleteProject: (projectId: string) => void
+  onProjectClick?: (project: Project) => void
 }
 
 export function ProjectsGrid({
   projects,
   onCreateProject,
   onUpdateProject,
-  onDeleteProject
+  onDeleteProject,
+  onProjectClick
 }: ProjectsGridProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [mode, setMode] = useState<"create" | "edit">("edit")
 
   const handleProjectClick = (project: Project) => {
-    setMode("edit")
-    setSelectedProject(project)
-    setIsDrawerOpen(true)
+    if (onProjectClick) {
+      onProjectClick(project)
+    } else {
+      setMode("edit")
+      setSelectedProject(project)
+      setIsDrawerOpen(true)
+    }
   }
 
   const handleCreateClick = () => {
@@ -60,7 +66,6 @@ export function ProjectsGrid({
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <span className="bg-zinc-800 text-white px-2 py-1 rounded text-xs">Proyectos</span>
-          <span className="text-zinc-500 text-sm">✓ Completos</span>
         </h2>
         <div className="flex gap-2">
            <Button size="sm" variant="ghost" className="h-8" onClick={handleCreateClick}>
