@@ -1,17 +1,29 @@
 "use client"
 
-import { User, Mail, Building2 } from "lucide-react"
+import { User, Mail, Building2, FolderKanban, Users, HardDrive } from "lucide-react"
+
+interface AccountLimits {
+  projects: number | "Ilimitado"
+  invitedUsers: number | "Ilimitado"
+  storage: string
+}
 
 interface ProfileViewProps {
   name?: string
   email?: string
   organization?: string
+  limits?: AccountLimits
 }
 
 export function ProfileView({
   name = "Antonio García",
   email = "antonio@atria.com",
   organization = "Atria",
+  limits = {
+    projects: 500,
+    invitedUsers: "Ilimitado",
+    storage: "130 GB",
+  },
 }: ProfileViewProps) {
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -53,6 +65,41 @@ export function ProfileView({
           <div>
             <p className="text-xs text-zinc-500 uppercase tracking-wider mb-0.5">Organización</p>
             <p className="text-sm font-medium text-white">{organization}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-md">
+        <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">Límites de la cuenta</h2>
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 divide-y divide-zinc-800">
+          <div className="flex items-center justify-between gap-4 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-800">
+                <FolderKanban className="h-4 w-4 text-zinc-400" />
+              </div>
+              <p className="text-sm text-zinc-300">Proyectos</p>
+            </div>
+            <span className="text-sm font-semibold text-white">{limits.projects}</span>
+          </div>
+
+          <div className="flex items-center justify-between gap-4 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-800">
+                <Users className="h-4 w-4 text-zinc-400" />
+              </div>
+              <p className="text-sm text-zinc-300">Usuarios invitados</p>
+            </div>
+            <span className="text-sm font-semibold text-white">{limits.invitedUsers}</span>
+          </div>
+
+          <div className="flex items-center justify-between gap-4 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-800">
+                <HardDrive className="h-4 w-4 text-zinc-400" />
+              </div>
+              <p className="text-sm text-zinc-300">Almacenamiento</p>
+            </div>
+            <span className="text-sm font-semibold text-white">{limits.storage}</span>
           </div>
         </div>
       </div>
