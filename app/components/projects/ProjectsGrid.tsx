@@ -86,7 +86,7 @@ export function ProjectsGrid({
         {/* Add New Project Placeholder */}
         <button
           onClick={handleCreateClick}
-          className="flex flex-col items-center justify-center p-6 border border-dashed border-zinc-700 rounded-lg text-zinc-500 hover:bg-zinc-900/50 hover:text-zinc-300 transition-colors h-full min-h-[140px]"
+          className="flex flex-col items-center justify-center p-6 border border-dashed border-zinc-700 rounded-lg text-zinc-500 hover:bg-zinc-900/50 hover:text-zinc-300 transition-colors h-full min-h-35"
         >
           <Plus className="h-8 w-8 mb-2" />
           <span className="text-sm font-medium">Nuevo Proyecto</span>

@@ -14,11 +14,14 @@ import { ProjectDetailView } from "./projects/ProjectDetailView"
 import { KanbanBoard } from "./tasks/KanbanBoard"
 import { CalendarView } from "./tasks/CalendarView"
 import { DocumentsView } from "./documents/DocumentsView"
+import { UsersView } from "./users/UsersView"
+import { ProfileView } from "./profile/ProfileView"
+import { Sidebar } from "./sidebar/Sidebar"
 import { LayoutDashboard, Calendar as CalendarIcon, ListTodo, FolderOpen } from "lucide-react"
 import { Button } from "./ui/button"
 
 export default function Dashboard() {
-  const [view, setView] = useState<"projects" | "kanban" | "calendar" | "documentos" | "project-detail">("projects")
+  const [view, setView] = useState<"projects" | "kanban" | "calendar" | "documentos" | "project-detail" | "users" | "profile">("projects")
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [projects, setProjects] = useState(initialProjects)
   const [tasks, setTasks] = useState(initialTasks)
@@ -192,6 +195,19 @@ export default function Dashboard() {
     }
   }
 
+  const handleSidebarNavigate = (target: "projects" | "kanban" | "calendar" | "documentos" | "project-detail" | "users" | "profile") => {
+    runWithViewTransition(() => {
+      if (target === "projects") {
+        setSelectedProject(null)
+      }
+      setView(target)
+    })
+  }
+
+  const handleSignOut = () => {
+    alert("Cerrando sesión...")
+  }
+
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project)
     runWithViewTransition(() => {
@@ -240,13 +256,20 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-4">
-      <header className="flex items-center justify-between mb-1 pb-2 border-b border-zinc-800">
+    <div className="min-h-screen bg-black text-white">
+      <Sidebar
+        currentView={view}
+        onNavigate={handleSidebarNavigate}
+        onSignOut={handleSignOut}
+      />
+
+      <div className="pl-16">
+      <header className="flex items-center justify-between mb-1 pb-2 border-b border-zinc-800 px-4 pt-4">
         <div>
            <h1 className="text-xl font-bold tracking-tight">Atria Manager</h1>
         </div>
         
-        {view !== "project-detail" && (
+        {view !== "project-detail" && view !== "users" && view !== "profile" && (
           <div className="flex bg-zinc-900 p-1 rounded-lg border border-zinc-800">
           <Button 
             variant={view === "projects" ? "secondary" : "ghost"} 
@@ -288,7 +311,7 @@ export default function Dashboard() {
         )}
       </header>
 
-      <main className="space-y-8 animate-in fade-in duration-500">
+      <main className="space-y-8 animate-in fade-in duration-500 px-4 pb-4">
         {view === "projects" && (
           <ProjectsGrid
             projects={projects}
@@ -352,7 +375,12 @@ export default function Dashboard() {
             />
           </div>
         )}
+
+        {view === "users" && <UsersView />}
+
+        {view === "profile" && <ProfileView />}
       </main>
+      </div>
     </div>
   )
 }
