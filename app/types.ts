@@ -39,3 +39,11 @@ export interface File {
   status: FileStatus;
   projectIds: string[];
 }
+
+export interface CollaboratorUser {
+  id: string;
+  name: string;
+  email: string;
+  projectIds: string[];
+  invitedAt: string;
+}

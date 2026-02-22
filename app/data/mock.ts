@@ -1,4 +1,4 @@
-import { Project, Task, Folder, File } from "../types";
+import { Project, Task, Folder, File, CollaboratorUser } from "../types";
 
 export const projects: Project[] = [
   {
@@ -266,6 +266,44 @@ export const files: File[] = [
     uploadedAt: "2026-02-18T08:45:00",
     status: "ready",
     projectIds: []
+  }
+];
+
+export const collaboratorUsers: CollaboratorUser[] = [
+  {
+    id: "u1",
+    name: "Antonio Reyes",
+    email: "antonio@atria.com",
+    projectIds: ["1", "2", "4", "6", "9"],
+    invitedAt: "2026-01-15T09:00:00"
+  },
+  {
+    id: "u2",
+    name: "Daniela Montoya",
+    email: "daniela@atria.com",
+    projectIds: ["3", "5", "7"],
+    invitedAt: "2026-01-20T11:30:00"
+  },
+  {
+    id: "u3",
+    name: "Carlos Vega",
+    email: "carlos@atria.com",
+    projectIds: ["1", "8"],
+    invitedAt: "2026-02-01T08:15:00"
+  },
+  {
+    id: "u4",
+    name: "Sofía Herrera",
+    email: "sofia@atria.com",
+    projectIds: ["2", "4", "6"],
+    invitedAt: "2026-02-05T14:00:00"
+  },
+  {
+    id: "u5",
+    name: "Miguel Ángel Torres",
+    email: "miguel@atria.com",
+    projectIds: [],
+    invitedAt: "2026-02-18T16:45:00"
   }
 ];
 
