@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Project, Task, File, Folder } from "@/app/types"
 import { ProjectFilesView } from "./ProjectFilesView"
+import { ProjectDrawer } from "./ProjectDrawer"
 import { CalendarView } from "../tasks/CalendarView"
 import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
@@ -57,6 +58,7 @@ export function ProjectDetailView({
   onDownloadFile
 }: ProjectDetailViewProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resume")
+  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false)
 
   const projectTasks = tasks.filter((task) => task.projectId === project.id)
 
@@ -101,7 +103,7 @@ export function ProjectDetailView({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onEdit(project)}
+              onClick={() => setIsEditDrawerOpen(true)}
               className="gap-2"
             >
               <Edit className="h-4 w-4" />
@@ -283,6 +285,21 @@ export function ProjectDetailView({
 
   return (
     <div className="space-y-6">
+      <ProjectDrawer
+        project={project}
+        mode="edit"
+        open={isEditDrawerOpen}
+        onClose={() => setIsEditDrawerOpen(false)}
+        onSave={(projectData) => {
+          onEdit(projectData as Project)
+          setIsEditDrawerOpen(false)
+        }}
+        onDelete={(projectId) => {
+          onDelete(projectId)
+          onBack()
+        }}
+      />
+
       {/* Header with back button and tabs */}
       <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
         <Button variant="ghost" size="sm" onClick={onBack} className="gap-2">

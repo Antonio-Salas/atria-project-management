@@ -127,6 +127,9 @@ export default function Dashboard() {
       setProjects((prev) =>
         prev.map((project) => (project.id === updatedProject.id ? updatedProject : project))
       )
+      if (selectedProject?.id === updatedProject.id) {
+        setSelectedProject(updatedProject)
+      }
     })
   }
 
