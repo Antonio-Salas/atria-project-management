@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { File, Folder, Project } from "@/app/types"
+import { File, Folder, Project } from "@/frontend/app/types"
 import { FileUploader } from "../documents/FileUploader"
 import { LinkToProjectModal } from "../documents/LinkToProjectModal"
 import { FolderTree } from "../documents/FolderTree"

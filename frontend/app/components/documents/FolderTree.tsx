@@ -1,6 +1,6 @@
 "use client"
 
-import { Folder } from "@/app/types"
+import { Folder } from "@/frontend/app/types"
 import { Folder as FolderIcon, ChevronRight, ChevronDown, Plus } from "lucide-react"
 import { Button } from "../ui/button"
 import { useState } from "react"

@@ -15,7 +15,7 @@ interface ProfileViewProps {
   limits?: AccountLimits
 }
 
-export function ProfileView({
+export default function ProfileView({
   name = "Antonio García",
   email = "antonio@atria.com",
   organization = "Atria",

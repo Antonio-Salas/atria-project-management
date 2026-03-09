@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { X, UserPlus, Check } from "lucide-react"
 import { Project } from "../../types"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
+import { Button } from "@/app/components/ui/button"
+import { Input } from "@/app/components/ui/input"
 
 interface InviteUserModalProps {
   open: boolean

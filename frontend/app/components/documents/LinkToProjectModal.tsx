@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { File, Project, Folder } from "@/app/types"
+import { File, Project, Folder } from "@/frontend/app/types"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Badge } from "../ui/badge"

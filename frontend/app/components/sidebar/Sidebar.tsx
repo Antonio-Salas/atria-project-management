@@ -1,49 +1,40 @@
 "use client"
 
+import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
 import { LayoutDashboard, Users, User, LogOut } from "lucide-react"
 import { Tooltip } from "../ui/tooltip"
 import { cn } from "../ui/card"
 
-type ViewType = "projects" | "kanban" | "calendar" | "documentos" | "project-detail" | "users" | "profile"
-
-interface SidebarProps {
-  currentView: ViewType
-  onNavigate: (view: ViewType) => void
-  onSignOut: () => void
-}
-
-interface NavItem {
-  id: ViewType
-  label: string
-  icon: React.ReactNode
-}
-
-const navItems: NavItem[] = [
-  {
-    id: "projects",
-    label: "Dashboard",
-    icon: <LayoutDashboard className="h-5 w-5" />,
-  },
-  {
-    id: "users",
-    label: "Usuarios",
-    icon: <Users className="h-5 w-5" />,
-  },
+const navItems = [
+  { href: "/projects", label: "Dashboard", icon: <LayoutDashboard className="h-5 w-5" /> },
+  { href: "/users",    label: "Usuarios",  icon: <Users className="h-5 w-5" /> },
 ]
 
-export function Sidebar({ currentView, onNavigate, onSignOut }: SidebarProps) {
-  const isActive = (id: ViewType) =>
-    id === "projects"
-      ? ["projects", "kanban", "calendar", "documentos", "project-detail"].includes(currentView)
-      : currentView === id
+export function Sidebar() {
+  const pathname = usePathname()
+  const router = useRouter()
+
+  const isActive = (href: string) =>
+    href === "/projects"
+      ? pathname === "/projects" || /^\/projects\/.+/.test(pathname) || pathname.startsWith("/tasks") || pathname.startsWith("/documents")
+      : pathname.startsWith(href)
+
+  const handleSignOut = () => {
+    alert("Cerrando sesión...")
+    router.push("/login")
+  }
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-full w-16 flex-col items-center border-l border-zinc-800 bg-zinc-950 py-4">
+    <aside className="fixed left-0 top-0 z-40 flex h-full w-16 flex-col items-center border-r border-zinc-800 bg-zinc-950 py-4">
       {/* Brand */}
       <Tooltip content="Atria Manager" side="right">
-        <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-white text-black font-bold text-lg select-none cursor-default">
+        <Link
+          href="/projects"
+          className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-white text-black font-bold text-lg select-none"
+        >
           A
-        </div>
+        </Link>
       </Tooltip>
 
       {/* Divider */}
@@ -52,18 +43,18 @@ export function Sidebar({ currentView, onNavigate, onSignOut }: SidebarProps) {
       {/* Nav items */}
       <nav className="flex flex-1 flex-col items-center gap-2">
         {navItems.map((item) => (
-          <Tooltip key={item.id} content={item.label} side="right">
-            <button
-              onClick={() => onNavigate(item.id)}
+          <Tooltip key={item.href} content={item.label} side="right">
+            <Link
+              href={item.href}
               className={cn(
                 "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
-                isActive(item.id)
+                isActive(item.href)
                   ? "bg-zinc-700 text-white"
                   : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
               )}
             >
               {item.icon}
-            </button>
+            </Link>
           </Tooltip>
         ))}
       </nav>
@@ -71,22 +62,22 @@ export function Sidebar({ currentView, onNavigate, onSignOut }: SidebarProps) {
       {/* Bottom actions */}
       <div className="flex flex-col items-center gap-2">
         <Tooltip content="Perfil" side="right">
-          <button
-            onClick={() => onNavigate("profile")}
+          <Link
+            href="/profile"
             className={cn(
               "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
-              currentView === "profile"
+              pathname.startsWith("/profile")
                 ? "bg-zinc-700 text-white"
                 : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
             )}
           >
             <User className="h-5 w-5" />
-          </button>
+          </Link>
         </Tooltip>
 
         <Tooltip content="Cerrar sesión" side="right">
           <button
-            onClick={onSignOut}
+            onClick={handleSignOut}
             className="flex h-10 w-10 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-red-500/10 hover:text-red-400"
           >
             <LogOut className="h-5 w-5" />

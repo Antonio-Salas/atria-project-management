@@ -4,11 +4,12 @@ import { useState } from "react"
 import { Users, UserPlus, Mail, FolderKanban } from "lucide-react"
 import { CollaboratorUser } from "../../types"
 import { collaboratorUsers, projects } from "../../data/mock"
-import { Button } from "../ui/button"
+// import { Button } from "../ui/button"
 import { InviteUserModal } from "./InviteUserModal"
 import { UserDetailModal } from "./UserDetailModal"
+import { Button } from "@/app/components/ui/button"
 
-export function UsersView() {
+export default function UsersView() {
   const [users, setUsers] = useState<CollaboratorUser[]>(collaboratorUsers)
   const [inviteOpen, setInviteOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<CollaboratorUser | null>(null)

@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef } from "react"
 import { Upload, X, CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
 import { Button } from "../ui/button"
-import { FileStatus } from "@/app/types"
+import { FileStatus } from "@/frontend/app/types"
 
 interface UploadingFile {
   id: string

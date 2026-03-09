@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { X, FolderKanban, Trash2, Plus, Check, Mail, User } from "lucide-react"
 import { CollaboratorUser, Project } from "../../types"
-import { Button } from "../ui/button"
+import { Button } from "@/app/components/ui/button"
 
 interface UserDetailModalProps {
   open: boolean

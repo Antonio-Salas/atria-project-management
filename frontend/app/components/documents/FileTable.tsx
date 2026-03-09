@@ -1,6 +1,6 @@
 "use client"
 
-import { File, Project } from "@/app/types"
+import { File, Project } from "@/frontend/app/types"
 import {
   FileText,
   Image as ImageIcon,
